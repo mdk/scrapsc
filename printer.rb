@@ -26,4 +26,8 @@ class Printer
       when 10070..43100 then "~#{elapsed_weeks}w"
     end
   end
+
+  def list_char
+    "*"
+  end
 end
