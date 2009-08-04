@@ -46,11 +46,20 @@ class Storage
   end
 
   def find_all_by_matcher(matcher)
-    qry = TDBQRY::new(@tdb)
-    qry.addcond(nil, TDBQRY::QCSTREQ, matcher)  
-    qry.addcond('metadata:NickName', TDBQRY::QCSTREQ, matcher)  
-    qry.addcond('metadata:Title', TDBQRY::QCSTREQ, matcher)  
-    qry.setlimit(1)
-    qry.search
+    qry1 = TDBQRY::new(@tdb)
+    qry1.addcond(nil, TDBQRY::QCSTRINC, matcher)  
+
+    qry2 = TDBQRY::new(@tdb)
+    qry2.addcond('metadata:NickName', TDBQRY::QCSTRINC, matcher)  
+
+    qry3 = TDBQRY::new(@tdb)
+    qry3.addcond('metadata:Title', TDBQRY::QCSTRINC, matcher)  
+
+    qry1.metasearch([qry2, qry3], 0).each { |key|
+      s = Scrap::new
+      cols = @tdb.get(key)
+      s.from_db_keys(key, cols)
+      yield s
+    }
   end
 end

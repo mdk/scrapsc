@@ -1,6 +1,7 @@
 require 'rubygems'
 require 'newcommand'
 require 'listcommand'
+require 'findcommand'
 
 # scrapsc new "Some title"
 # scrapsc list [--all]
@@ -8,7 +9,7 @@ require 'listcommand'
 # scrapsc show [nick | id | title]
 # scrapsc nick [nick | id | title] nick
 
-commands = [NewCommand, ListCommand]
+commands = [NewCommand, ListCommand, FindCommand]
 
 commands.each { |command_class|
   if command_class::word == ARGV[0]

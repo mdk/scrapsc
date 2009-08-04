@@ -1,17 +1,17 @@
 class Metadata < Hash
   def title
-    self['metadata:Title']
+    self['Title']
   end
 
   def title=(v)
-    self['metadata:Title'] = v
+    self['Title'] = v
   end
 
   def nick
-    self['metadata:Nick']
+    self['Nick']
   end
 
   def nick=(v)
-    self['metadata:Nick'] = v
+    self['Nick'] = v
   end
 end
