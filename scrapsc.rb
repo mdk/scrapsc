@@ -3,6 +3,7 @@ require 'newcommand'
 require 'listcommand'
 require 'findcommand'
 require 'infocommand'
+require 'showcommand'
 
 # scrapsc new "Some title"
 # scrapsc list [--all]
@@ -10,7 +11,7 @@ require 'infocommand'
 # scrapsc show [nick | id | title]
 # scrapsc nick [nick | id | title] nick
 
-commands = [NewCommand, ListCommand, FindCommand, InfoCommand]
+commands = [NewCommand, ListCommand, FindCommand, InfoCommand, ShowCommand]
 
 if ARGV.length == 0
   puts "Commands:"

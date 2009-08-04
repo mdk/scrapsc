@@ -48,6 +48,11 @@ class Scrap
     }
   end
 
+  def write_content(f)
+    f << @content
+    f.flush
+  end
+
   def fresh?
     @remote_id == nil
   end
