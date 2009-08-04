@@ -35,7 +35,7 @@ class Storage
 
   def each 
     qry = TDBQRY::new(@tdb)
-    qry.setorder('metadata:ModifiedAt', TDBQRY::QOSTRASC)
+    qry.setorder('metadata:ModifiedAt', TDBQRY::QOSTRDESC)
     qry.search.each { |key|
       yield wrap_scrap(key)
     }

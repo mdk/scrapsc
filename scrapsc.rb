@@ -9,7 +9,7 @@ require 'showcommand'
 # scrapsc list [--all]
 # scrapsc edit [nick | id | title]
 # scrapsc show [nick | id | title]
-# scrapsc nick [nick | id | title] nick
+# scrapsc nick [id] nick
 
 commands = [NewCommand, ListCommand, FindCommand, InfoCommand, ShowCommand]
 
