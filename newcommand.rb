@@ -1,4 +1,7 @@
 require 'command'
+require 'scrap'
+require 'storage'
+require 'tempfile'
 
 class NewCommand < Command
   attr_reader :title
@@ -19,13 +22,18 @@ class NewCommand < Command
   end
 
   def do!
-    #editor = ENV['EDITOR'] || 'vi'
-    #tempfile = Tempfile.new('scrap')
-    #system("#{editor} #{tempfile.path}")
-    #scrap = Scrap::new
-    #scrap.read_content(tempfile.path)
-    #scrap.metadata.title = walker.title
-    #storage << scrap
+    storage = Storage::new
+
+    editor = ENV['EDITOR'] || 'vi'
+    tempfile = Tempfile.new('scrap')
+    system("#{editor} #{tempfile.path}")
+    
+    scrap = Scrap::new
+    scrap.read_content(tempfile.path)
+    scrap.metadata.title = @title
+    storage << scrap
+
+    storage.close
   end
 end
 

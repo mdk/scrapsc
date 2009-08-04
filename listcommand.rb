@@ -18,6 +18,13 @@ class ListCommand < Command
   end
 
   def do!
+    storage = Storage::new
+
+    storage.each { |scrap|
+      puts "* #{scrap.local_id} - #{scrap.metadata.title}"
+    }
+
+    storage.close
   end
 
   def ListCommand::word
