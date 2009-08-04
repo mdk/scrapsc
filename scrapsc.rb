@@ -21,11 +21,11 @@ if ARGV[0] == 'new'
 
   scrap = Scrap::new
   scrap.read_content('temp.tmp')
-  scrap.metadata['metadata:Title'] = walker.title
+  scrap.metadata.title = walker.title
   
   storage << scrap
 elsif ARGV[0] == 'list'
   storage.each { |scrap|
-    puts "* #{scrap.local_id} - #{scrap.metadata['metadata:Title']}"
+    puts "* #{scrap.local_id} - #{scrap.metadata.title}"
   }
 end

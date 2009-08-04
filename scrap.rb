@@ -1,10 +1,12 @@
+require 'metadata'
+
 class Scrap
   
   attr_reader :metadata
   attr_accessor :content, :local_id, :remote_id, :revision
 
   def initialize
-    @metadata = {}
+    @metadata = Metadata::new
     @content = ''
     @local_id = nil
     @remote_id = nil
