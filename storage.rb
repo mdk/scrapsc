@@ -41,8 +41,34 @@ class Storage
     }
   end
 
-  def find_first_by_matcher(matcher)
-    find_all_by_matcher.first
+  def wrap_scrap(key)
+    s = Scrap::new
+    cols = @tdb.get(key)
+    s.from_db_keys(key, cols)
+    s
+  end
+
+
+  def first_by_matcher(matcher)
+    # By id
+    qry = TDBQRY::new(@tdb)
+    qry.addcond(nil, TDBQRY::QCSTRINC, matcher)  
+    key = qry.search.first
+    return wrap_scrap(key) if key
+
+    # Nick
+    qry = TDBQRY::new(@tdb)
+    qry.addcond('metadata:Nick', TDBQRY::QCSTRINC, matcher)  
+    key = qry.search.first
+    return wrap_scrap(key) if key
+
+    # Title
+    qry = TDBQRY::new(@tdb)
+    qry.addcond('metadata:Title', TDBQRY::QCSTRINC, matcher)  
+    key = qry.search.first
+    return wrap_scrap(key) if key
+
+    nil
   end
 
   def find_all_by_matcher(matcher)

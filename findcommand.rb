@@ -19,9 +19,10 @@ class FindCommand < Command
 
   def do!
     storage = Storage::new
-    storage.find_all_by_matcher(@keyword) { |scrap|
+    scrap = storage.first_by_matcher(@keyword)
+    if scrap
       puts "* #{scrap.local_id} - #{scrap.metadata.title}"
-    }
+    end
     storage.close
   end
 
