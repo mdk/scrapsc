@@ -5,7 +5,8 @@ require 'spec/rake/spectask'
 desc "Run all tests"
 Spec::Rake::SpecTask.new('test') do |t|
   t.spec_files = FileList['spec/storage-test.rb', 
-                          'spec/scrap-test.rb']
+                          'spec/scrap-test.rb',
+                          'spec/optwalkers-test.rb']
   t.spec_opts = ["--format", 'nested', '-c']
   t.rcov = true
   t.rcov_opts = ['--exclude', 'spec', '--html']

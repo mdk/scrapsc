@@ -19,7 +19,6 @@ class OptWalker
 end
 
 class NewWalker < OptWalker
-
   attr_reader :title
 
   def initialize(args)
@@ -32,5 +31,23 @@ class NewWalker < OptWalker
   def walk!
     move_one_or_throw!('Scrap title is required.')
     @title = @current
+  end
+end
+
+class ListWalker < OptWalker
+  attr_reader :all
+
+  def initialize(args)
+    super(args)
+    move_one!
+    throw 'Expected list' if @current != 'list'
+    @all = false
+  end
+
+  def walk!
+    move_one!
+    if @current == '--all' or @current == '-a'
+      @all = true
+    end
   end
 end
