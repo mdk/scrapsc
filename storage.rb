@@ -34,10 +34,10 @@ class Storage
   end
 
   def each 
-    @tdb.each { |key, cols|
-      s = Scrap::new
-      s.from_db_keys(key, cols)
-      yield s
+    qry = TDBQRY::new(@tdb)
+    qry.setorder('metadata:ModifiedAt', TDBQRY::QOSTRASC)
+    qry.search.each { |key|
+      yield wrap_scrap(key)
     }
   end
 
@@ -71,21 +71,26 @@ class Storage
     nil
   end
 
-  def find_all_by_matcher(matcher)
-    qry1 = TDBQRY::new(@tdb)
-    qry1.addcond(nil, TDBQRY::QCSTRINC, matcher)  
+  def each_by_matcher(matcher)
+    keys = []
 
-    qry2 = TDBQRY::new(@tdb)
-    qry2.addcond('metadata:NickName', TDBQRY::QCSTRINC, matcher)  
+    # By id
+    qry = TDBQRY::new(@tdb)
+    qry.addcond(nil, TDBQRY::QCSTRINC, matcher)  
+    keys += qry.search
 
-    qry3 = TDBQRY::new(@tdb)
-    qry3.addcond('metadata:Title', TDBQRY::QCSTRINC, matcher)  
+    # Nick
+    qry = TDBQRY::new(@tdb)
+    qry.addcond('metadata:Nick', TDBQRY::QCSTRINC, matcher)  
+    keys += qry.search
 
-    qry1.metasearch([qry2, qry3], 0).each { |key|
-      s = Scrap::new
-      cols = @tdb.get(key)
-      s.from_db_keys(key, cols)
-      yield s
+    # Title
+    qry = TDBQRY::new(@tdb)
+    qry.addcond('metadata:Title', TDBQRY::QCSTRINC, matcher)  
+    keys += qry.search
+    
+    keys.each { |key|
+        yield wrap_scrap(key)
     }
   end
 end

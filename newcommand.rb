@@ -29,7 +29,7 @@ class NewCommand < Command
     system("#{editor} #{tempfile.path}")
     
     scrap = Scrap::new
-    scrap.read_content(tempfile.path)
+    scrap.read_content(tempfile)
     scrap.metadata.set_dates
     scrap.metadata.title = @title
     storage << scrap

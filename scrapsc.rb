@@ -22,7 +22,6 @@ end
 
 commands.each { |command_class|
   if command_class::word == ARGV[0]
-    puts "Calling #{command_class}"
     c = command_class::new(ARGV)
     c.walk!
     c.do!

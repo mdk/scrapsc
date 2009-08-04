@@ -41,12 +41,10 @@ class Scrap
     }
   end
 
-  def read_content(fname)
+  def read_content(f)
     @content = ''
-    File.open(fname, 'r') { |f|
-      f.each_line { |line|
-        @content << line
-      }
+    f.each_line { |line|
+      @content << line
     }
   end
 

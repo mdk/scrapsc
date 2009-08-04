@@ -18,11 +18,11 @@ class FindCommand < Command
   end
 
   def do!
+    puts "Notes matching '#{@keyword}'"
     storage = Storage::new
-    scrap = storage.first_by_matcher(@keyword)
-    if scrap
-      puts "* #{scrap.local_id} - #{scrap.metadata.title}"
-    end
+    storage.each_by_matcher(@keyword) { |scrap|
+      puts "  * #{scrap.local_id} - #{scrap.metadata.title}"
+    }
     storage.close
   end
 

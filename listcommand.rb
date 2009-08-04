@@ -19,12 +19,14 @@ class ListCommand < Command
 
   def do!
     storage = Storage::new
-
+    
+    puts "Latest scraps:\n\n"
     storage.each { |scrap|
-      puts "* #{scrap.local_id} - #{scrap.metadata.title}"
+      puts "  * #{scrap.local_id} - #{scrap.metadata.title}"
     }
 
     storage.close
+    puts "\n"
   end
 
   def ListCommand::word
