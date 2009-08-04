@@ -32,7 +32,7 @@ describe "Printer" do
       @p.generate_date(DateTime::now - 10).should == "~1w"
       @p.generate_date(DateTime::now - 11).should == "~2w"
       @p.generate_date(DateTime::now - 14).should == "~2w"
-      @p.generate_date(DateTime::now - 15).should == "~3w"
+      @p.generate_date(DateTime::now - 18).should == "~3w"
     end
   end
 end
