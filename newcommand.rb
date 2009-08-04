@@ -35,5 +35,9 @@ class NewCommand < Command
 
     storage.close
   end
+
+  def NewCommand::hint
+    'new TITLE    : create new note using text editor'
+  end
 end
 

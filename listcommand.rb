@@ -30,4 +30,8 @@ class ListCommand < Command
   def ListCommand::word
     'list'
   end
+
+  def ListCommand::hint
+    'list [--all] : list recent or all scraps'
+  end
 end

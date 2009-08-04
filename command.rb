@@ -26,4 +26,8 @@ class Command
   def Command::word
     nil
   end
+
+  def Command::hint
+    ''
+  end
 end

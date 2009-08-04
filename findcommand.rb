@@ -28,4 +28,8 @@ class FindCommand < Command
   def FindCommand::word
     'find'
   end
+
+  def FindCommand::hint
+    'find KEYWORD : list notes matching word (via id, nick or title)'
+  end
 end

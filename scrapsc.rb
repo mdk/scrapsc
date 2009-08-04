@@ -11,6 +11,14 @@ require 'findcommand'
 
 commands = [NewCommand, ListCommand, FindCommand]
 
+if ARGV.length == 0
+  puts "Commands:"
+  commands.each { |command_class|
+    puts "  scrapsc #{command_class::hint}"
+  }
+exit
+end
+
 commands.each { |command_class|
   if command_class::word == ARGV[0]
     puts "Calling #{command_class}"
