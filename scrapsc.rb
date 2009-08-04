@@ -2,6 +2,7 @@ require 'rubygems'
 require 'newcommand'
 require 'listcommand'
 require 'findcommand'
+require 'infocommand'
 
 # scrapsc new "Some title"
 # scrapsc list [--all]
@@ -9,7 +10,7 @@ require 'findcommand'
 # scrapsc show [nick | id | title]
 # scrapsc nick [nick | id | title] nick
 
-commands = [NewCommand, ListCommand, FindCommand]
+commands = [NewCommand, ListCommand, FindCommand, InfoCommand]
 
 if ARGV.length == 0
   puts "Commands:"
