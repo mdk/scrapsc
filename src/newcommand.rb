@@ -54,9 +54,12 @@ class NewCommand < Command
     
     scrap = Scrap::new
     scrap.read_content(tempfile)
-    scrap.metadata.set_dates
-    scrap.metadata.title = @title
-    storage << scrap
+    if scrap.content != nil and scrap.content != ''
+      scrap.title = @title
+      storage << scrap
+    else
+      puts "No content, not saving."
+    end
 
     storage.close
   end

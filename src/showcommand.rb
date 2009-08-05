@@ -57,7 +57,7 @@ class ShowCommand < Command
     scrap.read_content(tempfile)
     if scrap.content != old_content
       puts "Scrap modified, saving."
-      scrap.metadata.modified_at = DateTime::now
+      scrap.modified_at = DateTime::now
       storage << scrap
     elsif
       puts "Not modified."

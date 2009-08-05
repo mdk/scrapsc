@@ -59,7 +59,7 @@ class Storage
 
   def each 
     qry = TDBQRY::new(@tdb)
-    qry.setorder('metadata:ModifiedAt', TDBQRY::QOSTRDESC)
+    qry.setorder('ModifiedAt', TDBQRY::QOSTRDESC)
     qry.search.each { |key|
       yield wrap_scrap(key)
     }
@@ -72,26 +72,24 @@ class Storage
     s
   end
 
-
   def first_by_matcher(matcher)
     # By id
     qry = TDBQRY::new(@tdb)
-    qry.addcond(nil, TDBQRY::QCSTRINC, matcher)  
+    qry.addcond('', TDBQRY::QCSTREQ, matcher)  
     key = qry.search.first
     return wrap_scrap(key) if key
 
     # Nick
     qry = TDBQRY::new(@tdb)
-    qry.addcond('metadata:Nick', TDBQRY::QCSTRINC, matcher)  
+    qry.addcond('Nick', TDBQRY::QCSTRINC, matcher)  
     key = qry.search.first
     return wrap_scrap(key) if key
 
     # Title
     qry = TDBQRY::new(@tdb)
-    qry.addcond('metadata:Title', TDBQRY::QCSTRINC, matcher)  
+    qry.addcond('Title', TDBQRY::QCSTRINC, matcher)  
     key = qry.search.first
     return wrap_scrap(key) if key
-
     nil
   end
 
@@ -100,17 +98,17 @@ class Storage
 
     # By id
     qry = TDBQRY::new(@tdb)
-    qry.addcond(nil, TDBQRY::QCSTRINC, matcher)  
+    qry.addcond('', TDBQRY::QCSTRINC, matcher)  
     keys += qry.search
 
     # Nick
     qry = TDBQRY::new(@tdb)
-    qry.addcond('metadata:Nick', TDBQRY::QCSTRINC, matcher)  
+    qry.addcond('Nick', TDBQRY::QCSTRINC, matcher)  
     keys += qry.search
 
     # Title
     qry = TDBQRY::new(@tdb)
-    qry.addcond('metadata:Title', TDBQRY::QCSTRINC, matcher)  
+    qry.addcond('Title', TDBQRY::QCSTRINC, matcher)  
     keys += qry.search
     
     keys.each { |key|

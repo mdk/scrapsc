@@ -22,47 +22,43 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-require 'metadata'
+require 'date'
 
 class Scrap
   
-  attr_reader :metadata
-  attr_accessor :content, :local_id, :remote_id, :revision
+  attr_accessor :content, :id, :revision, :title, :nick, :created_at, :modified_at
+  attr_accessor :local_id
 
   def initialize
-    @metadata = Metadata::new
-    @content = ''
+    @content = nil
     @local_id = nil
-    @remote_id = nil
-    @revision = 1
+    @id = nil
+    @revision = nil
+    @title = nil
+    @nick = nil
+    @created_at = DateTime::now
+    @modified_at = @created_at
   end
 
   def to_db_keys
-    hsh = {}
-    hsh['content'] = @content
-    hsh['remote_id'] = @remote_id.to_s
-    hsh['revision'] = @revision.to_s
-
-    # Metadata
-    metadata.each { |key, value|
-      name = "metadata:#{key}"
-      hsh[name] = value
-    }
-    hsh
+    {'Content' => @content.to_s, 
+     'Id' => @id.to_s,
+     'Revision' => @revision.to_s,
+     'Nick' => @nick.to_s, 
+     'CreatedAt' => @created_at.to_s,
+     'ModifiedAt' => @modified_at.to_s,
+     'Title' => @title.to_s} 
   end
 
   def from_db_keys(key, data)
-    @content = data['content']
+    @content = data['Content']
     @local_id = key
-    @remote_id = data['remote_id']
-    @revision = data['revision'].to_i
-
-    # Metadata 
-    data.each { |key, value| 
-      if key =~ /^metadata:/
-        @metadata[key.gsub(/^metadata:/, '')] = value
-      end
-    }
+    @id = data['Id']
+    @revision = data['Revision']
+    @title = data['Title']
+    @nick = data['Nick']
+    @created_at = DateTime.parse(data['CreatedAt'])
+    @modified_at = DateTime.parse(data['ModifiedAt'])
   end
 
   def read_content(f)
@@ -78,14 +74,10 @@ class Scrap
   end
 
   def fresh?
-    @remote_id == nil
+    @id == nil or @id == ''
   end
 
   def saved?
-    @local_id != nil
-  end
-
-  def has_metadata?(m)
-    @metadata[m] != nil
+    @local_id != nil and @local_id != ''
   end
 end

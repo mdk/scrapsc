@@ -46,7 +46,7 @@ class ListCommand < Command
     
     puts "Latest scraps:\n\n"
     storage.each { |scrap|
-      puts "  * #{scrap.local_id} - #{scrap.metadata.title}"
+      puts "  * #{scrap.local_id} - #{scrap.title}"
     }
 
     storage.close

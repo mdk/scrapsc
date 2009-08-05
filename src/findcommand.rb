@@ -45,7 +45,7 @@ class FindCommand < Command
     puts "Notes matching '#{@keyword}'"
     storage = Storage::new
     storage.each_by_matcher(@keyword) { |scrap|
-      puts "  * #{scrap.local_id} - #{scrap.metadata.title}"
+      puts "  * #{scrap.local_id} - #{scrap.title}"
     }
     storage.close
   end
