@@ -1,3 +1,5 @@
+$LOAD_PATH << './src'
+
 require 'rubygems'
 require 'newcommand'
 require 'spec'

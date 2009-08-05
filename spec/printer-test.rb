@@ -1,3 +1,5 @@
+$LOAD_PATH << './src'
+
 require 'printer'
 
 describe "Printer" do
