@@ -27,31 +27,35 @@ $LOAD_PATH << './src'
 require 'rubygems'
 require 'scrap'
 require 'spec'
+require 'date'
 
 describe 'Scrap' do
-
   before(:each) do
     @s = Scrap::new
   end
 
   context 'scrap basic' do
-
     it "can be created" do
       @s.should_not be_nil
+      @s.content.should == nil
     end
 
     it "has a settable content" do
       @s.content = "This is content"
       @s.content.should == "This is content"
     end
-
-    it "has a settable metadata" do
-      @s.metadata['Title'] = "TitleOne"
-      @s.metadata['Nick'] = "nick"
-      @s.metadata['Title'].should == "TitleOne"
-      @s.metadata['Nick'].should == "nick"
+  
+    it 'has a settable id' do
+      @s.id = '1234S'
+      @s.id.should == '1234S'
     end
 
+    it 'has a setable creation date' do
+      d = DateTime::now
+      @s.created_at = d
+      @s.created_at.should == d
+    end
+    
     it 'is fresh by default' do
       @s.fresh?.should be_true
     end
@@ -59,26 +63,25 @@ describe 'Scrap' do
     it 'is not saved by default' do
       @s.saved?.should_not be_true
     end
-
+  end
+  
+  context 'scrap serialization' do
     it "can be serialized to keys" do
       @s.content = "Hello"
-      @s.remote_id = 'AAA'
-      @s.revision = 3
-      @s.metadata['Title'] = "TitleOne"
-      @s.metadata['Nick'] = "nick"
+      @s.id = 'AAA'
+      @s.revision = '3'
+      @s.title = "TitleOne"
+      @s.nick = "nick"
     
       data = @s.to_db_keys
 
       data.should_not be_nil
-      data['content'].should == "Hello"
-      data['remote_id'].should == "AAA"
-      data['revision'].should == "3"
-      data['metadata:Title'].should == 'TitleOne'
-      data['metadata:Nick'].should == 'nick'
+      data['Content'].should == "Hello"
+      data['Id'].should == "AAA"
+      data['Revision'].should == "3"
+      data['Title'].should == 'TitleOne'
+      data['Nick'].should == 'nick'
     end
-  end
-
-  context 'scrap serialization' do
 
     it 'truly serializes to strings' do
       @s.revision = 3
@@ -86,42 +89,27 @@ describe 'Scrap' do
       data = @s.to_db_keys
     
       data.should_not be_nil
-      data['revision'].should_not == 3
+      data['Revision'].should_not == 3
+      data['Revision'].should == '3'
     end
 
     it "when serialized, nil is not put" do
       data = @s.to_db_keys
-      data['remote_id'].should == ''
-      data['content'].should == ''
-      data['revision'].should == '1'
+      data['Id'].should == ''
+      data['Content'].should == ''
+      data['Revision'].should == ''
     end
 
     it 'can unserialize from db keys' do
-      data = { 'remote_id' => 'BBB', 
-               'revision' => '67', 
-               'content' => 'HelloWorld' }
+      data = { 'Id' => 'BBB', 
+               'Revision' => '67', 
+               'Content' => 'HelloWorld' }
       @s.from_db_keys('567', data)
   
       @s.local_id.should == '567'
-      @s.remote_id.should == 'BBB'
-      @s.revision.should == 67
+      @s.id.should == 'BBB'
+      @s.revision.should == '67'
       @s.content.should == 'HelloWorld'
-    end
-
-    it 'can unserialize metadata too' do
-      data = { 'remote_id' => 'CCC', 
-               'revision' => '87', 
-               'content' => 'HelloWorld', 
-               'metadata:Title' => 'Hello', 
-               'metadata:Another' => 'Another' }
-      @s.from_db_keys('666', data)
-    
-      @s.local_id.should == '666'
-      @s.remote_id.should == 'CCC'
-      @s.revision.should == 87
-      @s.content.should == 'HelloWorld'
-      @s.metadata['Title'].should == 'Hello'
-      @s.metadata['Another'].should == 'Another'
     end
   end
 end

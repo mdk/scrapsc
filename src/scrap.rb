@@ -57,8 +57,12 @@ class Scrap
     @revision = data['Revision']
     @title = data['Title']
     @nick = data['Nick']
-    @created_at = DateTime.parse(data['CreatedAt'])
-    @modified_at = DateTime.parse(data['ModifiedAt'])
+    
+    @created_at = nil
+    @created_at = DateTime.parse(data['CreatedAt']) if data['CreatedAt']
+    
+    @modified_at = nil
+    @modified_at = DateTime.parse(data['ModifiedAt']) if data['ModifiedAt']
   end
 
   def read_content(f)
