@@ -25,10 +25,12 @@
 $LOAD_PATH << './src'
 
 require 'printer'
+require 'date'
 
 describe "Printer" do
   before (:each) do
-    @p = Printer::new
+    @str = ''
+    @p = Printer::new(@str)
   end
 
   context 'printer helpers' do
@@ -44,6 +46,7 @@ describe "Printer" do
 
     it 'generates nice dates' do
       minute = 1.0 / (24 * 60.0)
+      @p.generate_date(DateTime::now - (minute * 0.1)).should == "~1m"
       @p.generate_date(DateTime::now - (minute * 5)).should == "~5m"
       @p.generate_date(DateTime::now - (minute * 40)).should == "~40m"
       @p.generate_date(DateTime::now - (minute * 41)).should == "~1h"
@@ -59,6 +62,62 @@ describe "Printer" do
       @p.generate_date(DateTime::now - 11).should == "~2w"
       @p.generate_date(DateTime::now - 14).should == "~2w"
       @p.generate_date(DateTime::now - 18).should == "~3w"
+    end
+  end
+
+  context 'print format' do
+    it 'can print a list entry' do
+      @p.print_list_entry("LALA")
+      @str.should == '  * LALA'
+    end
+
+    it 'can print a scrap list entry' do
+      scrap = mock('Scrap')
+      scrap.stub!(:title).and_return('My Scrap')
+      scrap.stub!(:modified_at).and_return(DateTime::now)
+      @p.print_scrap_list_entry(scrap)
+      @str.should == '  * My Scrap (~1m)'
+    end
+
+    it 'can print a scrap list entry with no title' do
+      scrap = mock('Scrap')
+      scrap.stub!(:title).and_return(nil)
+      scrap.stub!(:modified_at).and_return(DateTime::now)
+      @p.print_scrap_list_entry(scrap)
+      @str.should == '  * (Undefined) (~1m)'
+    end
+
+    it 'can print a scrap list entry with empty title' do
+      scrap = mock('Scrap')
+      scrap.stub!(:title).and_return('')
+      scrap.stub!(:modified_at).and_return(DateTime::now)
+      @p.print_scrap_list_entry(scrap)
+      @str.should == '  * (Undefined) (~1m)'
+    end
+
+    it 'can print a generic message' do
+      @p.print_message('Saved.')
+      @str.should == 'Saved.'
+    end
+
+    it 'can print an error message' do
+      @p.print_error('Failed')
+      @str.should == 'ERROR: Failed'
+    end
+
+    it 'can print a warning message' do
+      @p.print_warning('Watch out!')
+      @str.should == 'WARNING: Watch out!'
+    end
+
+    it 'can print a field value' do
+      @p.print_field('Title', 'Hello')
+      @str.should == 'Title: Hello'
+    end
+
+    it 'can print usage info' do
+      @p.print_usage('new [NOTE TITLE]')
+      @str.should == 'scrapsc new [NOTE TITLE]'
     end
   end
 end

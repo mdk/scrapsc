@@ -25,6 +25,10 @@
 require 'date'
   
 class Printer
+  def initialize(target)
+    @target = target
+  end
+
   def normalize_title(title)
     if title == nil or title == ''
       "(Undefined)"
@@ -42,7 +46,8 @@ class Printer
     elapsed_weeks = ((now - date) / 7.0).round
     
     case elapsed_minutes
-      when 0..40 then "~#{elapsed_minutes}m"
+      when 0 then "~1m"
+      when 1..40 then "~#{elapsed_minutes}m"
       when 40..60 then "~1h"
       when 60..100 then "~1h"
       when 101..830 then "~#{elapsed_hours}h"
@@ -60,6 +65,6 @@ class Printer
   end
 
   def print_scrap_list_entry(scrap)
-    print_list_entry("#{normalize_title(scrap.metadata.title)} (#{generate_date(scrap.metadata.modified_at)})")
+    print_list_entry("#{normalize_title(scrap.title)} (#{generate_date(scrap.modified_at)})")
   end
 end
