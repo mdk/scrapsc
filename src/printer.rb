@@ -54,4 +54,12 @@ class Printer
   def list_char
     "*"
   end
+
+  def print_list_entry(text)
+    @target << "  #{list_char} #{text}"
+  end
+
+  def print_scrap_list_entry(scrap)
+    print_list_entry("#{normalize_title(scrap.metadata.title)} (#{generate_date(scrap.metadata.modified_at)})")
+  end
 end
